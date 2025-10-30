@@ -1,0 +1,29 @@
+{
+    "romachymakk7@gmail.com": {
+        "name": "roman chumak",
+        "email": "romachymakk7@gmail.com",
+        "password": "$2y$10$0Wp7q.lurRSzzJF2OTZmRu63rsWhaeqciKkZzX3hesPVe7DvMjFd2",
+        "registered": "2025-10-29 15:05:08"
+    },
+    "romancumak89@gmail.com": {
+        "name": "Кирилл",
+        "email": "romancumak89@gmail.com",
+        "password": "$2y$10$zQXkXb.CdAEZaqnMBG0z7OaVYGAo03dMsykJ8CEPv7MVpGNujPMVW",
+        "registered": "2025-10-29 15:10:17"
+    },
+    "0": {
+        "name": "Roman Chumak",
+        "email": "admin@electroshop.pl",
+        "password": "$2y$10$a5BkUNXySM6cy4WbHncmuOY4tOzbVV..ZddnzTtjkapW9OspsErAW"
+    },
+    "1": {
+        "name": "Roman Chumak",
+        "email": "admin@electroshop.pl",
+        "password": "$2y$10$wTGej8yk0PtYrZQYl1vrZOfHwB8IrgY3p9VmeczH6oKhX2TnLrVAS"
+    },
+    "dianadkitovich@gmail.com": {
+        "name": "егор",
+        "email": "dianadkitovich@gmail.com",
+        "password": "$2y$10$GovYmh\/wYv3Wab91EHjtbeA0dO\/bpPKy.gpDfB\/pzbwTGaf26\/Uqq"
+    }
+}

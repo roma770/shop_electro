@@ -1,0 +1,422 @@
+{
+    "1": {
+        "title": "Smartfon XPhone 12",
+        "price": 3200,
+        "image": "images\/img1.jpg",
+        "description": "Nowoczesny smartfon z dobrym aparatem i baterią.",
+        "category": "smartfony",
+        "features": [
+            "Wyświetlacz OLED 6.1 cala\r",
+            "Procesor A14 Bionic\r",
+            "Pamięć 128 GB\r",
+            "Aparat 12 MP z trybem nocnym\r",
+            "Bateria 4000 mAh"
+        ]
+    },
+    "2": {
+        "title": "Laptop ProBook 15",
+        "price": 1590,
+        "image": "images\/img2.jpg",
+        "description": "Wydajny laptop do pracy i nauki.",
+        "category": "laptopy",
+        "features": [
+            "Ekran 15.6 cala Full HD",
+            "Procesor Intel i5",
+            "RAM 8 GB, SSD 512 GB",
+            "Waga 1.6 kg",
+            "System Windows 11"
+        ]
+    },
+    "3": {
+        "title": "Słuchawki bezprzewodowe SoundMax",
+        "price": 590,
+        "image": "images\/img3.webp",
+        "description": "Wygodne słuchawki z długim czasem pracy na baterii.",
+        "category": "sluchawki",
+        "features": [
+            "Bluetooth 5.3",
+            "Czas pracy do 30 godzin",
+            "Redukcja szumów ANC",
+            "Etui z szybkim ładowaniem",
+            "Kompatybilność z iOS\/Android"
+        ]
+    },
+    "4": {
+        "title": "Smartwatch TimeGo X",
+        "price": 390,
+        "image": "images\/img4.avif",
+        "description": "Funkcjonalny smartwatch z czujnikami zdrowia i Bluetooth.",
+        "category": "smartwatche",
+        "features": [
+            "Pomiar tętna i snu",
+            "Tryby sportowe",
+            "Ekran dotykowy 1.4 cala",
+            "Bateria do 10 dni",
+            "Odporność IP68"
+        ]
+    },
+    "5": {
+        "title": "Smartwatch FitLife Pro",
+        "price": 550,
+        "image": "images\/img5.webp",
+        "description": "Zaawansowany zegarek sportowy.",
+        "category": "smartwatche",
+        "features": [
+            "Pomiar tlenu we krwi (SpO2)",
+            "GPS wbudowany",
+            "Ekran AMOLED",
+            "Ładowanie magnetyczne",
+            "Powiadomienia z telefonu"
+        ]
+    },
+    "6": {
+        "title": "Zegarek Elegant-TR",
+        "price": 420,
+        "image": "images\/img6.webp",
+        "description": "Klasyczny wygląd, smart funkcje.",
+        "category": "smartwatche",
+        "features": [
+            "Stalowa koperta",
+            "Metalowy pasek",
+            "Odporność na zachlapanie",
+            "Wbudowany krokomierz",
+            "Stylowy design"
+        ]
+    },
+    "7": {
+        "title": "Apple MacBook Air M2",
+        "price": 5490,
+        "image": "images\/img7.webp",
+        "description": "Ultralekki i wydajny laptop Apple z procesorem M2, idealny do pracy i podróży.",
+        "category": "laptopy",
+        "features": [
+            "Wyświetlacz Retina 13.6 cala",
+            "Procesor Apple M2",
+            "Pamięć RAM 8 GB, SSD 512 GB",
+            "Waga tylko 1.24 kg",
+            "System macOS Ventura"
+        ]
+    },
+    "8": {
+        "title": "Laptop UltraBook Air 14",
+        "price": 2990,
+        "image": "images\/img8.webp",
+        "description": "Superlekki laptop z ekranem IPS i aluminiową obudową.",
+        "category": "laptopy",
+        "features": [
+            "Intel i7 12gen",
+            "RAM 16 GB, SSD 1TB",
+            "Ekran 14'' Full HD",
+            "Waga 1.2 kg",
+            "Klawiatura podświetlana"
+        ]
+    },
+    "9": {
+        "title": "Laptop GameMaster RTX",
+        "price": 5490,
+        "image": "images\/img9.webp",
+        "description": "Laptop gamingowy z kartą RTX i ekranem 144 Hz.",
+        "category": "laptopy",
+        "features": [
+            "Procesor Intel i9",
+            "GeForce RTX 4060",
+            "RAM 32 GB, SSD 1TB",
+            "Ekran 17.3 cala 144 Hz",
+            "System chłodzenia Dual-Fan"
+        ]
+    },
+    "10": {
+        "title": "Laptop ZenBook Touch",
+        "price": 3790,
+        "image": "images\/img10.png",
+        "description": "Elegancki ultrabook z ekranem dotykowym.",
+        "category": "laptopy",
+        "features": [
+            "Ekran 14'' dotykowy OLED",
+            "Ryzen 7 6800U",
+            "RAM 16 GB, SSD 512 GB",
+            "Czas pracy 12 godzin",
+            "Thunderbolt 4"
+        ]
+    },
+    "11": {
+        "title": "Laptop StudentBook 13",
+        "price": 1290,
+        "image": "images\/img11.avif",
+        "description": "Lekki laptop idealny dla uczniów i studentów.",
+        "category": "laptopy",
+        "features": [
+            "Ekran 13.3 cala",
+            "Procesor Intel N200",
+            "RAM 8 GB",
+            "SSD 256 GB",
+            "Cicha praca"
+        ]
+    },
+    "12": {
+        "title": "Laptop WorkStation X17",
+        "price": 6990,
+        "image": "images\/img121.jpg",
+        "description": "Profesjonalna stacja robocza dla grafików i twórców.",
+        "category": "laptopy",
+        "features": [
+            "Intel i9 13gen",
+            "NVIDIA RTX 4080",
+            "RAM 64 GB, SSD 2TB",
+            "Ekran 17'' 4K HDR",
+            "Aluminiowa obudowa"
+        ]
+    },
+    "13": {
+        "title": "Słuchawki bezprzewodowe Apple",
+        "price": 2590,
+        "image": "images\/img131.jpg",
+        "description": "Bezprzewodowe słuchawki z redukcją szumów ANC.",
+        "category": "sluchawki",
+        "features": [
+            "Bluetooth 5.3",
+            "ANC",
+            "30 godzin pracy",
+            "Szybkie ładowanie",
+            "Brak etui"
+        ]
+    },
+    "14": {
+        "title": "Słuchawki StudioPro X",
+        "price": 890,
+        "image": "images\/img14.png",
+        "description": "Dla profesjonalistów i audiofilów.",
+        "category": "sluchawki",
+        "features": [
+            "Dźwięk Hi-Res",
+            "Przewodowe 3.5mm i BT 5.2",
+            "Składana konstrukcja",
+            "40mm przetworniki",
+            "Etui w zestawie"
+        ]
+    },
+    "15": {
+        "title": "Słuchawki AirPods 3",
+        "price": 799,
+        "image": "images\/img15.jpeg",
+        "description": "Słuchawki douszne z automatycznym parowaniem.",
+        "category": "sluchawki",
+        "features": [
+            "Bluetooth 5.3",
+            "Obsługa Siri",
+            "Ładowanie bezprzewodowe",
+            "Do 24 godzin odtwarzania",
+            "Wodoszczelność IPX4"
+        ]
+    },
+    "16": {
+        "title": "Słuchawki Titan ANC",
+        "price": 690,
+        "image": "images\/img16.jpg",
+        "description": "Nowoczesne słuchawki z aktywną redukcją hałasu.",
+        "category": "sluchawki",
+        "features": [
+            "ANC Hybrid",
+            "Bluetooth 5.2",
+            "20 godzin pracy",
+            "Składana konstrukcja",
+            "Mikrofon z redukcją szumów"
+        ]
+    },
+    "17": {
+        "title": "Słuchawki Galaxy Buds Z",
+        "price": 590,
+        "image": "images\/img17.webp",
+        "description": "Kompaktowe słuchawki z wysoką jakością dźwięku.",
+        "category": "sluchawki",
+        "features": [
+            "Bluetooth 5.3",
+            "Etui ładujące 400 mAh",
+            "Sterowanie dotykowe",
+            "Tryb ambient",
+            "Wodoodporność IPX5"
+        ]
+    },
+    "18": {
+        "title": "Słuchawki GamingBass 7.1",
+        "price": 420,
+        "image": "images\/img18.webp",
+        "description": "Słuchawki gamingowe z dźwiękiem przestrzennym 7.1.",
+        "category": "sluchawki",
+        "features": [
+            "Dźwięk 7.1",
+            "Podświetlenie RGB",
+            "Mikrofon na wysięgniku",
+            "Nauszniki z pianki memory",
+            "USB"
+        ]
+    },
+    "19": {
+        "title": "Słuchawki AirPods Pro 2",
+        "price": 1050,
+        "image": "images\/img19.webp",
+        "description": "Najwyższej klasy słuchawki bezprzewodowe Apple z aktywną redukcją szumów i dźwiękiem przestrzennym.",
+        "category": "sluchawki",
+        "features": [
+            "Aktywna redukcja szumów (ANC)",
+            "Tryb przezroczystości",
+            "Dźwięk przestrzenny z czujnikiem ruchu głowy",
+            "Ładowanie MagSafe i USB-C",
+            "Czas pracy do 30 godzin z etui"
+        ]
+    },
+    "20": {
+        "title": "Smartwatch TimeGo X",
+        "price": 390,
+        "image": "images\/img20.jpg",
+        "description": "Smartwatch z czujnikami zdrowia i trybami sportowymi.",
+        "category": "smartwatche",
+        "features": [
+            "Ekran 1.4 cala",
+            "Pomiar tętna i snu",
+            "Tryby sportowe",
+            "Bateria do 10 dni",
+            "Bluetooth 5.1"
+        ]
+    },
+    "21": {
+        "title": "Smartwatch ActiveBand 3",
+        "price": 470,
+        "image": "images\/img21.jpg",
+        "description": "Stylowy zegarek fitness z metalową kopertą.",
+        "category": "smartwatche",
+        "features": [
+            "Ekran AMOLED",
+            "Tryby fitness",
+            "Krokomierz i SpO2",
+            "Wymienne paski",
+            "Wodoszczelność 5ATM"
+        ]
+    },
+    "22": {
+        "title": "Smartwatch Titan HR",
+        "price": 690,
+        "image": "images\/img22.jpg",
+        "description": "Elegancki smartwatch z monitorowaniem zdrowia.",
+        "category": "smartwatche",
+        "features": [
+            "Czujnik EKG",
+            "GPS + NFC",
+            "Ekran Gorilla Glass",
+            "Bateria 14 dni",
+            "Powiadomienia z telefonu"
+        ]
+    },
+    "23": {
+        "title": "Smartwatch SportRunner S2",
+        "price": 530,
+        "image": "images\/img23.avif",
+        "description": "Lekki zegarek sportowy z pulsoksymetrem.",
+        "category": "smartwatche",
+        "features": [
+            "Pomiar tętna, SpO2",
+            "Tryby biegania",
+            "Bluetooth 5.2",
+            "Waga 30g",
+            "IP68"
+        ]
+    },
+    "24": {
+        "title": "Smartwatch Elegant Steel",
+        "price": 720,
+        "image": "images\/img24.jpg",
+        "description": "Luksusowy smartwatch w stalowej obudowie.",
+        "category": "smartwatche",
+        "features": [
+            "Ekran AMOLED 1.43 cala",
+            "Czujnik EKG",
+            "Pasek stalowy",
+            "NFC płatności",
+            "Wodoszczelność 5ATM"
+        ]
+    },
+    "25": {
+        "title": "Smartfon Galaxy Mini X",
+        "price": 500,
+        "image": "images\/img25.jpg",
+        "description": "Kompaktowy telefon z mocnym procesorem.",
+        "category": "smartfony",
+        "features": [
+            "Ekran 6.0 cala",
+            "Snapdragon 7 Gen 1",
+            "RAM 8 GB",
+            "Aparat 48 MP",
+            "Szybkie ładowanie 45W"
+        ]
+    },
+    "26": {
+        "title": "Laptop FlexBook 360",
+        "price": 2890,
+        "image": "images\/img26.jpg",
+        "description": "Laptop konwertowalny z dotykowym ekranem.",
+        "category": "laptopy",
+        "features": [
+            "Ekran 14'' Full HD dotykowy",
+            "Zawias 360°",
+            "Intel i5",
+            "RAM 16 GB",
+            "SSD 512 GB"
+        ]
+    },
+    "27": {
+        "title": "Smartwatch PulseFit Z",
+        "price": 420,
+        "image": "images\/img27.jpg",
+        "description": "Stylowy smartwatch dla aktywnych użytkowników.",
+        "category": "smartwatche",
+        "features": [
+            "Ekran 1.3 cala LCD",
+            "Pomiar tętna",
+            "Powiadomienia",
+            "Wymienne paski",
+            "IP68"
+        ]
+    },
+    "28": {
+        "title": "Słuchawki MaxBeat Studio",
+        "price": 760,
+        "image": "images\/img28.webp",
+        "description": "Bezprzewodowe słuchawki z mocnym basem.",
+        "category": "sluchawki",
+        "features": [
+            "Bluetooth 5.2",
+            "ANC",
+            "Ładowanie USB-C",
+            "Do 35 godzin odtwarzania",
+            "Wygodne nauszniki"
+        ]
+    },
+    "29": {
+        "title": "Laptop PixelNote 16",
+        "price": 3390,
+        "image": "images\/img29.avif",
+        "description": "Nowoczesny laptop z ekranem 2K i procesorem Ryzen.",
+        "category": "laptopy",
+        "features": [
+            "Ekran 16 cala 2K",
+            "Ryzen 7 7735HS",
+            "RAM 16 GB",
+            "SSD 1 TB",
+            "Grafika Radeon 780M"
+        ]
+    },
+    "30": {
+        "title": "Smartfon Edge V10",
+        "price": 2790,
+        "image": "images\/img30.webp",
+        "description": "Nowoczesny smartfon z ekranem bez ramek.",
+        "category": "smartfony",
+        "features": [
+            "Ekran 6.9 cala OLED",
+            "RAM 12 GB",
+            "Aparat 108 MP",
+            "Szybkie ładowanie 80W",
+            "5G"
+        ]
+    }
+}

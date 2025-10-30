@@ -1,0 +1,215 @@
+<?php
+session_start();
+
+$usersFile = __DIR__ . '/users.json';
+$usersRaw = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
+
+// --- нормализуем структуру users
+$users = [];
+if (is_array($usersRaw)) {
+    $is_list = array_keys($usersRaw) === range(0, count($usersRaw) - 1);
+    if ($is_list) {
+        foreach ($usersRaw as $u) {
+            if (!empty($u['email'])) {
+                $users[trim($u['email'])] = $u;
+            }
+        }
+    } else {
+        $users = $usersRaw;
+    }
+}
+
+// === админ ===
+$admin_email = 'admin@electroshop.pl';
+$admin_password = 'admin1234';
+
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    // --- вход администратора
+    if ($email === $admin_email && $password === $admin_password) {
+        $_SESSION['user'] = [
+            'name' => 'Administrator',
+            'email' => $admin_email
+        ];
+        $_SESSION['success_message'] = "👑 Witaj ponownie, Administrator!";
+        header("Location: index.php");
+        exit;
+    }
+
+    // --- обычный пользователь
+    if ($email !== '' && isset($users[$email]) && password_verify($password, $users[$email]['password'])) {
+        $_SESSION['user'] = $users[$email];
+        $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($users[$email]['name']) . "!";
+        header("Location: index.php");
+        exit;
+    }
+
+    $error = "❌ Nieprawidłowy adres e-mail lub hasło.";
+}
+?>
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zaloguj się — Electro Shop</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+    background: #f5f7fb;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main.auth-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.auth-box {
+    background: #fff;
+    padding: 60px 70px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    animation: fadeIn 0.5s ease;
+    transition: transform 0.3s ease;
+}
+.auth-box:hover {
+    transform: translateY(-3px);
+}
+.auth-box h2 {
+    font-size: 1.9em;
+    color: #2a7;
+    margin-bottom: 25px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.auth-box input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    border: 1.6px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: all 0.25s;
+}
+.auth-box input:focus {
+    border-color: #2a7;
+    box-shadow: 0 0 0 4px rgba(42,167,100,0.15);
+    outline: none;
+}
+.auth-box button {
+    width: 100%;
+    background: #2a7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.1s;
+}
+.auth-box button:hover {
+    background: #1f5;
+    transform: translateY(-2px);
+}
+.auth-box p {
+    margin-top: 18px;
+    font-size: 0.95em;
+}
+.auth-box a {
+    color: #2a7;
+    text-decoration: none;
+    font-weight: 600;
+}
+.auth-box a:hover {
+    text-decoration: underline;
+}
+.error {
+    background: #ffeaea;
+    color: #d33;
+    border: 1px solid #f5b0b0;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* анимация */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+    .auth-box {
+        padding: 45px 30px;
+    }
+    .auth-box h2 {
+        font-size: 1.6em;
+    }
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="header-left">
+        <button class="category-toggle" id="categoryToggleBtn">&#9776;</button>
+        <h1>Electro Shop</h1>
+    </div>
+    <nav>
+        <?php if (basename($_SERVER['PHP_SELF']) !== 'register.php'): ?>
+            <a href="register.php">Rejestracja 🧑‍💻</a>
+        <?php endif; ?>
+
+        <?php if (basename($_SERVER['PHP_SELF']) !== 'login.php'): ?>
+            <a href="login.php">Zaloguj się 🔑</a>
+        <?php endif; ?>
+
+        <a href="index.php">Katalog</a>
+        <a href="about.php">O nas</a>
+        <a href="cart.php">Koszyk (<?= array_sum($_SESSION['cart'] ?? []); ?>)</a>
+    </nav>
+</header>
+
+<main class="auth-container">
+    <div class="auth-box">
+        <h2>Zaloguj się 🔑</h2>
+
+        <?php if (!empty($error)): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
+        <form method="post" autocomplete="off">
+            <input type="email" name="email" placeholder="Adres e-mail" required>
+            <input type="password" name="password" placeholder="Hasło" required>
+            <button type="submit">Zaloguj się 🔑</button>
+        </form>
+
+        <p>Nie masz konta? <a href="register.php">Zarejestruj się 🧑‍💻</a></p>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 Electro Shop — Wszystkie prawa zastrzeżone.</p>
+</footer>
+</body>
+</html>

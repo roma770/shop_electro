@@ -1,6 +1,4 @@
 <?php
-
-
 session_start();
 $user_name = $_SESSION['user']['name'] ?? null;
 $admin_email = 'admin@electroshop.pl';
@@ -266,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('productModal');
     const modalClose = document.getElementById('modalClose');
 
+    // === Открытие / закрытие бокового меню ===
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('open');
         overlay.classList.toggle('open');
@@ -279,8 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalClose.addEventListener('click', () => modal.classList.remove('open'));
 
+    // === Модалка для товара ===
     const products = <?= json_encode($products_full, JSON_UNESCAPED_UNICODE) ?>;
-
     document.querySelectorAll('.product').forEach(card => {
         card.addEventListener('click', (e) => {
             if (e.target.classList.contains('add-to-cart')) return;
@@ -303,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // === Добавление в корзину ===
     document.querySelectorAll('.add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -316,5 +316,98 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+<!-- === MINI CHAT WIDGET === -->
+<div id="chatWidget" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    width: 300px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;">
+  <div style="background:#2a7;color:#fff;padding:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
+    <span>💬 Czat z obsługą</span>
+    <button id="chatClose" style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer;">×</button>
+  </div>
+  <div id="chatMessages" style="height:250px;overflow-y:auto;padding:10px;font-size:0.9em;background:#fafafa;"></div>
+  <form id="chatForm" style="display:flex;border-top:1px solid #eee;">
+    <input id="chatInput" placeholder="Napisz wiadomość..." style="flex:1;padding:10px;border:none;outline:none;">
+    <button style="background:#2a7;color:#fff;border:none;padding:10px 12px;cursor:pointer;">➤</button>
+  </form>
+</div>
+
+<!-- === КНОПКА ОТКРЫТИЯ ЧАТА === -->
+<button id="chatToggle" style="
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#2a7;
+    color:#fff;
+    border:none;
+    border-radius:50%;
+    width:56px;
+    height:56px;
+    font-size:22px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
+    cursor:pointer;">💬</button>
+
+<!-- === Подключение Socket.io === -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io("http://localhost:3000");
+socket.emit("register", "user", "Użytkownik");
+
+const chatWidget = document.getElementById("chatWidget");
+const chatToggle = document.getElementById("chatToggle");
+const chatClose = document.getElementById("chatClose");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+// === Открытие и закрытие чата ===
+chatToggle.addEventListener("click", () => {
+  chatWidget.style.display = "flex";
+  chatToggle.style.display = "none"; // скрываем кнопку 💬
+});
+
+chatClose.addEventListener("click", () => {
+  chatWidget.style.display = "none";
+  chatToggle.style.display = "block"; // возвращаем кнопку 💬
+});
+
+// === Отправка сообщений ===
+chatForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  const msg = { user: "Użytkownik", text };
+  socket.emit("chat_message", msg);
+  addMessage(msg);
+  chatInput.value = "";
+});
+
+// === Получение сообщений от сервера ===
+socket.on("chat_message", msg => addMessage(msg));
+
+// === Добавление сообщений в окно ===
+function addMessage(msg) {
+  const div = document.createElement("div");
+  div.style.margin = "4px 0";
+  div.style.padding = "6px 10px";
+  div.style.borderRadius = "8px";
+  div.style.maxWidth = "85%";
+  div.style.wordWrap = "break-word";
+  div.style.background = msg.user === "Użytkownik" ? "#e8f5e9" : "#d1ecf1";
+  div.textContent = `${msg.user}: ${msg.text}`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+</script>
+
 </body>
 </html>

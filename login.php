@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/db.php';
 
 $usersFile = __DIR__ . '/users.json';
 $usersRaw = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
@@ -10,9 +11,7 @@ if (is_array($usersRaw)) {
     $is_list = array_keys($usersRaw) === range(0, count($usersRaw) - 1);
     if ($is_list) {
         foreach ($usersRaw as $u) {
-            if (!empty($u['email'])) {
-                $users[trim($u['email'])] = $u;
-            }
+            if (!empty($u['email'])) $users[trim($u['email'])] = $u;
         }
     } else {
         $users = $usersRaw;
@@ -22,7 +21,6 @@ if (is_array($usersRaw)) {
 // === админ ===
 $admin_email = 'admin@electroshop.pl';
 $admin_password = 'admin1234';
-
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,17 +29,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- вход администратора
     if ($email === $admin_email && $password === $admin_password) {
-        $_SESSION['user'] = [
-            'name' => 'Administrator',
-            'email' => $admin_email
-        ];
+        $_SESSION['user'] = ['name' => 'Administrator', 'email' => $admin_email];
         $_SESSION['success_message'] = "👑 Witaj ponownie, Administrator!";
         header("Location: index.php");
         exit;
     }
 
-    // --- обычный пользователь
-    if ($email !== '' && isset($users[$email]) && password_verify($password, $users[$email]['password'])) {
+    // --- вход через PostgreSQL
+    if ($conn) {
+        $res = @pg_query_params($conn, "SELECT * FROM users WHERE email=$1", [$email]);
+        if ($res && pg_num_rows($res) > 0) {
+            $dbUser = pg_fetch_assoc($res);
+            if (password_verify($password, $dbUser['password'])) {
+                $_SESSION['user'] = [
+                    'name' => $dbUser['username'],
+                    'email' => $dbUser['email']
+                ];
+                $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($dbUser['username']) . "!";
+                header("Location: index.php");
+                exit;
+            }
+        }
+    }
+
+    // --- вход через JSON
+    if ($email && isset($users[$email]) && password_verify($password, $users[$email]['password'])) {
         $_SESSION['user'] = $users[$email];
         $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($users[$email]['name']) . "!";
         header("Location: index.php");
@@ -58,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zaloguj się — Electro Shop</title>
 <link rel="stylesheet" href="style.css">
-
 <style>
 body {
     background: #f5f7fb;
@@ -67,7 +78,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
 main.auth-container {
     flex: 1;
     display: flex;
@@ -75,7 +85,6 @@ main.auth-container {
     align-items: center;
     padding: 40px 20px;
 }
-
 .auth-box {
     background: #fff;
     padding: 60px 70px;
@@ -85,90 +94,37 @@ main.auth-container {
     max-width: 450px;
     width: 100%;
     animation: fadeIn 0.5s ease;
-    transition: transform 0.3s ease;
 }
-.auth-box:hover {
-    transform: translateY(-3px);
-}
+.auth-box:hover { transform: translateY(-3px); }
 .auth-box h2 {
     font-size: 1.9em;
     color: #2a7;
     margin-bottom: 25px;
     font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
 }
 .auth-box input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 16px;
-    border: 1.6px solid #ddd;
-    border-radius: 10px;
-    font-size: 1em;
+    width: 100%; padding: 14px; margin-bottom: 16px;
+    border: 1.6px solid #ddd; border-radius: 10px; font-size: 1em;
     transition: all 0.25s;
 }
 .auth-box input:focus {
     border-color: #2a7;
     box-shadow: 0 0 0 4px rgba(42,167,100,0.15);
-    outline: none;
 }
 .auth-box button {
-    width: 100%;
-    background: #2a7;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 1em;
-    font-weight: 600;
-    cursor: pointer;
+    width: 100%; background: #2a7; color: #fff;
+    border: none; border-radius: 10px; padding: 14px;
+    font-size: 1em; font-weight: 600; cursor: pointer;
     transition: background 0.25s, transform 0.1s;
 }
-.auth-box button:hover {
-    background: #1f5;
-    transform: translateY(-2px);
-}
-.auth-box p {
-    margin-top: 18px;
-    font-size: 0.95em;
-}
-.auth-box a {
-    color: #2a7;
-    text-decoration: none;
-    font-weight: 600;
-}
-.auth-box a:hover {
-    text-decoration: underline;
-}
+.auth-box button:hover { background: #1f5; transform: translateY(-2px); }
 .error {
-    background: #ffeaea;
-    color: #d33;
-    border: 1px solid #f5b0b0;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-weight: 500;
-}
-
-/* анимация */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 480px) {
-    .auth-box {
-        padding: 45px 30px;
-    }
-    .auth-box h2 {
-        font-size: 1.6em;
-    }
+    background: #ffeaea; color: #d33;
+    border: 1px solid #f5b0b0; padding: 10px;
+    border-radius: 10px; margin-bottom: 15px;
 }
 </style>
 </head>
-
 <body>
 <header>
     <div class="header-left">
@@ -179,11 +135,9 @@ main.auth-container {
         <?php if (basename($_SERVER['PHP_SELF']) !== 'register.php'): ?>
             <a href="register.php">Rejestracja 🧑‍💻</a>
         <?php endif; ?>
-
         <?php if (basename($_SERVER['PHP_SELF']) !== 'login.php'): ?>
             <a href="login.php">Zaloguj się 🔑</a>
         <?php endif; ?>
-
         <a href="index.php">Katalog</a>
         <a href="about.php">O nas</a>
         <a href="cart.php">Koszyk (<?= array_sum($_SESSION['cart'] ?? []); ?>)</a>
@@ -193,23 +147,16 @@ main.auth-container {
 <main class="auth-container">
     <div class="auth-box">
         <h2>Zaloguj się 🔑</h2>
-
-        <?php if (!empty($error)): ?>
-            <div class="error"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-
+        <?php if ($error): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
         <form method="post" autocomplete="off">
             <input type="email" name="email" placeholder="Adres e-mail" required>
             <input type="password" name="password" placeholder="Hasło" required>
             <button type="submit">Zaloguj się 🔑</button>
         </form>
-
         <p>Nie masz konta? <a href="register.php">Zarejestruj się 🧑‍💻</a></p>
     </div>
 </main>
 
-<footer>
-    <p>© 2025 Electro Shop — Wszystkie prawa zastrzeżone.</p>
-</footer>
+<footer><p>© 2025 Electro Shop — Wszystkie prawa zastrzeżone.</p></footer>
 </body>
 </html>

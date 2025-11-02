@@ -25,5 +25,40 @@
         "name": "егор",
         "email": "dianadkitovich@gmail.com",
         "password": "$2y$10$GovYmh\/wYv3Wab91EHjtbeA0dO\/bpPKy.gpDfB\/pzbwTGaf26\/Uqq"
+    },
+    "rchumak1@stu.vistula.edu.pl": {
+        "name": "roman",
+        "email": "rchumak1@stu.vistula.edu.pl",
+        "password": "$2y$10$cgI5XIS2OLucwkk9Vf03MucfKtd.5pln9rmRL4oNr1vBcRtXfTvu6"
+    },
+    "ggorin233@gmail.com": {
+        "name": "Diana Dkitovich",
+        "email": "ggorin233@gmail.com",
+        "password": "$2y$10$6NBzX47qt1ba3fc9CBZnw.MwQjk9luWwlYvzejURcschTSdFMynLy"
+    },
+    "chwhucewec@gmail.com": {
+        "name": "illia dorn",
+        "email": "chwhucewec@gmail.com",
+        "password": "$2y$10$toHYMDdAFl9K9wCOu08aF.jhw3eiL0MYnYokZLvYPqZZV2Nmzb5Oe"
+    },
+    "ncweouchwchw@gmail.com": {
+        "name": "максим клоун",
+        "email": "ncweouchwchw@gmail.com",
+        "password": "$2y$10$tZAayc2jkoageTnZn7IzYeqnpQvJV4IZxNAeOfUGYczIJVZHUQc0q"
+    },
+    "test2@gmail.com": {
+        "name": "test2@gmail.com",
+        "email": "test2@gmail.com",
+        "password": "$2y$10$YezmtpcmN8StgvtrDqEoh.SlTlz0obA2SCPx4oEPEipy\/BqHRqvvq"
+    },
+    "rqiuhvhroh8h@gmail.com": {
+        "name": "uqnv;urvprilc",
+        "email": "rqiuhvhroh8h@gmail.com",
+        "password": "$2y$10$scSHG3QPMRNBCKmWjRFoC.98vl4B\/\/Aff6.yiTbq8CdDAL8LQ46Gy"
+    },
+    "lpqkedkweiw@gmail.com": {
+        "name": "owkkedweodwke",
+        "email": "lpqkedkweiw@gmail.com",
+        "password": "$2y$10$aftaHtYZyz8p40J.j\/7\/6.eBbooiZKzS9\/dVqEPUD9BtJjoA6FY4K"
     }
 }

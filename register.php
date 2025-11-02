@@ -1,24 +1,27 @@
 <?php
 session_start();
+require_once __DIR__ . '/db.php';
+if ($conn) {
+    echo "<p style='color:green;'>✅ Połączenie z PostgreSQL działa!</p>";
+} else {
+    echo "<p style='color:red;'>❌ Brak połączenia z PostgreSQL!</p>";
+}
 
 $usersFile = __DIR__ . '/users.json';
 
-// === создаём файл, если его нет ===
+// === создаём JSON, если нет ===
 if (!file_exists($usersFile)) {
     file_put_contents($usersFile, json_encode(new stdClass(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 
+// === загружаем пользователей из JSON ===
 $usersRaw = json_decode(file_get_contents($usersFile), true) ?? [];
-
-// === нормализуем структуру users[email] = userData ===
 $users = [];
 if (is_array($usersRaw)) {
     $is_list = array_keys($usersRaw) === range(0, count($usersRaw) - 1);
     if ($is_list) {
         foreach ($usersRaw as $u) {
-            if (!empty($u['email'])) {
-                $users[trim($u['email'])] = $u;
-            }
+            if (!empty($u['email'])) $users[$u['email']] = $u;
         }
     } else {
         $users = $usersRaw;
@@ -31,10 +34,9 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
-    $pass_raw = $_POST['password'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    // === Валидация ===
-    if ($name === '' || $email === '' || $pass_raw === '') {
+    if ($name === '' || $email === '' || $password === '') {
         $error = '⚠️ Wypełnij wszystkie pola.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = '❌ Nieprawidłowy adres e-mail.';
@@ -43,21 +45,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($users[$email])) {
         $error = '📧 Konto z tym adresem e-mail już istnieje.';
     } else {
-        // === Добавляем пользователя ===
-        $users[$email] = [
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($pass_raw, PASSWORD_DEFAULT)
-        ];
+        $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        if (file_put_contents($usersFile, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) === false) {
-            $error = '❌ Błąd zapisu pliku. Sprawdź uprawnienia serwera.';
-        } else {
-            $_SESSION['user'] = ['name' => $name, 'email' => $email];
-            $_SESSION['success_message'] = "✅ Konto zostało pomyślnie utworzone! Witaj, $name 👋";
-            header('Location: index.php');
-            exit;
+        // === Добавляем в JSON ===
+        $users[$email] = ['name' => $name, 'email' => $email, 'password' => $hash];
+        file_put_contents($usersFile, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        // === Добавляем в PostgreSQL (если доступен) ===
+        if ($conn) {
+            @pg_query_params($conn,
+                "INSERT INTO users (username, email, password, role) VALUES ($1,$2,$3,'user')",
+                [$name, $email, $hash]
+            );
         }
+
+        // 🔄 Синхронизируем JSON ↔ SQL
+        if ($conn) {
+    $insert_result = @pg_query_params(
+        $conn,
+        "INSERT INTO users (username, email, password, role)
+         VALUES ($1, $2, $3, 'user')",
+        [$name, $email, $hash]
+    );
+
+    if ($insert_result) {
+        echo "<p style='color:green;'>✅ Użytkownik zapisany w PostgreSQL!</p>";
+    } else {
+        echo "<p style='color:red;'>❌ Błąd zapisu do PostgreSQL: " . pg_last_error($conn) . "</p>";
+    }
+}
+
+        $_SESSION['user'] = ['name' => $name, 'email' => $email];
+        $_SESSION['success_message'] = "✅ Konto zostało pomyślnie utworzone! Witaj, $name 👋";
+        header('Location: index.php');
+        exit;
     }
 }
 ?>
@@ -72,117 +93,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 body {
     background: #f5f7fb;
     font-family: 'Inter', sans-serif;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    display: flex; flex-direction: column;
+    min-height: 100vh; margin: 0;
 }
 main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 1; display: flex;
+    justify-content: center; align-items: center;
     padding: 40px 15px;
 }
 .register-box {
-    background: #fff;
-    padding: 55px 65px;
-    border-radius: 20px;
+    background: #fff; padding: 55px 65px; border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    text-align: center;
-    width: 100%;
-    max-width: 450px;
+    text-align: center; width: 100%; max-width: 450px;
     animation: fadeIn .5s ease;
-    transition: transform .3s ease;
 }
-.register-box:hover {
-    transform: translateY(-3px);
-}
-.register-box h2 {
-    color: #2a7;
-    font-weight: 700;
-    font-size: 1.9em;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
+.register-box h2 { color: #2a7; font-weight: 700; margin-bottom: 25px; }
 .register-box input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: 1.6px solid #ddd;
-    border-radius: 10px;
-    font-size: 1em;
-    transition: all 0.25s ease;
-}
-.register-box input:focus {
-    border-color: #2a7;
-    box-shadow: 0 0 0 4px rgba(42,167,100,0.15);
-    outline: none;
+    width: 100%; padding: 14px; margin-bottom: 15px;
+    border: 1.6px solid #ddd; border-radius: 10px; font-size: 1em;
 }
 .register-box button {
-    width: 100%;
-    background: #2a7;
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background .25s, transform .1s;
+    width: 100%; background: #2a7; color: #fff; border: none;
+    border-radius: 10px; padding: 14px; font-weight: 600;
 }
-.register-box button:hover {
-    background: #1f5;
-    transform: translateY(-2px);
-}
-.register-box p {
-    margin-top: 15px;
-    font-size: 0.95em;
-}
-.register-box a {
-    color: #2a7;
-    text-decoration: none;
-    font-weight: 600;
-}
-.register-box a:hover {
-    text-decoration: underline;
-}
-.error {
-    background: #ffeaea;
-    color: #d33;
-    border: 1px solid #f5b0b0;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-weight: 500;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@media (max-width: 480px) {
-    .register-box { padding: 40px 30px; }
-    .register-box h2 { font-size: 1.6em; }
-}
+.error { background: #ffeaea; color: #d33; border-radius: 10px; padding: 10px; margin-bottom: 15px; }
 </style>
 </head>
 <body>
 <header>
-    <div class="header-left">
-        <button class="category-toggle" id="categoryToggleBtn">&#9776;</button>
-        <h1>Electro Shop</h1>
-    </div>
+    <div class="header-left"><h1>Electro Shop</h1></div>
     <nav>
-        <?php if (basename($_SERVER['PHP_SELF']) !== 'register.php'): ?>
-            <a href="register.php">Rejestracja 🧑‍💻</a>
-        <?php endif; ?>
-
-        <?php if (basename($_SERVER['PHP_SELF']) !== 'login.php'): ?>
-            <a href="login.php">Zaloguj się 🔑</a>
-        <?php endif; ?>
-
+        <a href="login.php">Zaloguj się 🔑</a>
         <a href="index.php">Katalog</a>
         <a href="about.php">O nas</a>
         <a href="cart.php">Koszyk (<?= array_sum($_SESSION['cart'] ?? []); ?>)</a>
@@ -192,10 +133,8 @@ main {
 <main>
     <div class="register-box">
         <h2>Zarejestruj się 🧑‍💻</h2>
-        <?php if ($error): ?>
-            <div class="error"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-        <form method="post" autocomplete="off">
+        <?php if ($error): ?><div class="error"><?= htmlspecialchars($error) ?></div><?php endif; ?>
+        <form method="post">
             <input type="text" name="name" placeholder="Imię i nazwisko" required>
             <input type="email" name="email" placeholder="Adres e-mail" required>
             <input type="password" name="password" placeholder="Hasło" required>
@@ -204,9 +143,6 @@ main {
         <p>Masz już konto? <a href="login.php">Zaloguj się 🔑</a></p>
     </div>
 </main>
-
-<footer>
-    <p>© 2025 Electro Shop — Wszystkie prawa zastrzeżone.</p>
-</footer>
+<footer><p>© 2025 Electro Shop — Wszystkie prawa zastrzeżone.</p></footer>
 </body>
 </html>

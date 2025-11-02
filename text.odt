@@ -1,14 +1,6 @@
-1) index.php        ← главная страница (товары)
-2) cart.php         ← корзина
-3) checkout.php     ← оформление заказа
-4) products.json    ← список всех товаров
-5) admin.php        ← страница администратора
-6) admin@electroshop.pl - почта администратора
-Надо сделать:
-✅1-добавить админ кнопку чтобы редачить сайт, товары с страницы, удалять и тд   
-✅2- кнопка зарегестрироваться как для пользователя 
-3- база даных postgresql
-4-разместить онлайн 
-5- переделать папку гит под проект  
-6- добавить js.
-file:///C:/xampp/htdocs/shop_electro/admin_chat.html - 
+1) admin.php        ← страница администратора
+2) admin@electroshop.pl - admin1234
+         roman67733
+file:///C:/xampp/htdocs/shop_electro/admin_chat.html 
+http://localhost/shop_electro/test_pgsql.php 
+3) sql- admin123

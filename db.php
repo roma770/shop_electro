@@ -1,34 +1,73 @@
 <?php
-$host = getenv('DB_HOST') ?: 'dpg-d43q9ohr0fns73fdnsmg-a'; // Хост Render
-$dbname = getenv('DB_NAME') ?: 'shop_users';                // Имя базы
-$user = getenv('DB_USER') ?: 'shop_users_user';             // Пользователь
-$password = getenv('DB_PASSWORD') ?: 'OJpw4aSzQ7YxGROyPmjyIXVABH8NfIKS'; // 🔑 ВСТАВЬ СЮДА пароль из Render Connections
-$port = getenv('DB_PORT') ?: '5432';                        // Порт PostgreSQL
+// ===========================================================
+// ✅ Универсальное подключение PostgreSQL (Render + localhost)
+// ===========================================================
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-// === Подключаемся к базе ===
-$conn = @pg_connect("host=$host dbname=$dbname user=$user password=$password port=$port");
+// Определяем: Render или localhost
+$isRender = getenv('RENDER') || getenv('DB_HOST');
 
-if (!$conn) {
-    // Ошибка подключения
-    error_log("❌ Ошибка подключения к PostgreSQL: " . pg_last_error());
-    $conn = null; // продолжаем работу без БД
+// === Конфигурация Render ===
+if ($isRender) {
+    // 🔧 Render Database Credentials
+    $host = 'dpg-d43q9ohr0fns73fdnsmg-a.frankfurt-postgres.render.com';
+    $port = '5432';
+    $dbname = 'shop_users';
+    $user = 'shop_users_user';
+    $password = 'OJpw4aSzQ7YxGROyPmjyIXVABH8NfIKS';
+
+    // Полный URL Render (он из Connections → External Database URL)
+    $renderUrl = "postgresql://$user:$password@$host:$port/$dbname";
+
+    // Подключение
+    $conn = @pg_connect($renderUrl);
+
+    if (!$conn) {
+        $error = pg_last_error();
+        error_log("❌ Ошибка Render PostgreSQL: $error");
+        echo "<h3 style='color:red'>❌ Ошибка подключения к Render PostgreSQL.<br>$error</h3>";
+    } else {
+        error_log("✅ Подключено к PostgreSQL (Render: $dbname@$host)");
+    }
+
+// === Конфигурация локального XAMPP ===
 } else {
-    // Для Render логируем успешное подключение (один раз в логах)
-    error_log("✅ Подключено к PostgreSQL ($dbname@$host)");
+    $host = 'localhost';
+    $port = '5432';
+    $dbname = 'shop_users';
+    $user = 'postgres';
+    $password = 'admin123';
+
+    $conn = @pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+
+    if (!$conn) {
+        $error = pg_last_error();
+        error_log("❌ Ошибка локального PostgreSQL: $error");
+        echo "<h3 style='color:red'>❌ Ошибка подключения к локальной БД.<br>$error</h3>";
+    } else {
+        error_log("✅ Подключено к PostgreSQL (Localhost: $dbname@$host)");
+    }
+}
+
+// === Проверка подключения ===
+if (!$conn) {
+    die("<h2 style='color:red'>⛔ Не удалось подключиться к базе данных.</h2>");
 }
 
 // === 🔄 Функция синхронизации JSON ↔ SQL ===
 function syncUsersBetweenJsonAndSQL($conn, $usersFile) {
     if (!$conn) return;
 
-    // Загружаем пользователей из JSON
     $usersJson = file_exists($usersFile)
         ? json_decode(file_get_contents($usersFile), true)
         : [];
 
-    // Загружаем пользователей из PostgreSQL
     $result = @pg_query($conn, "SELECT username, email, password, role FROM users");
-    if (!$result) return;
+    if (!$result) {
+        error_log("⚠️ Ошибка запроса при синхронизации: " . pg_last_error());
+        return;
+    }
 
     while ($row = pg_fetch_assoc($result)) {
         $email = $row['email'];
@@ -42,10 +81,11 @@ function syncUsersBetweenJsonAndSQL($conn, $usersFile) {
         }
     }
 
-    // Сохраняем обновлённый JSON
     file_put_contents(
         $usersFile,
         json_encode($usersJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
     );
+
+    error_log("🔄 Синхронизация JSON ↔ SQL завершена.");
 }
 ?>

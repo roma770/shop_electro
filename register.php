@@ -1,11 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/db.php';
-if ($conn) {
-    echo "<p style='color:green;'>✅ Połączenie z PostgreSQL działa!</p>";
-} else {
-    echo "<p style='color:red;'>❌ Brak połączenia z PostgreSQL!</p>";
-}
 
 $usersFile = __DIR__ . '/users.json';
 

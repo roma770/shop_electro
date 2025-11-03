@@ -87,14 +87,18 @@ button:hover {
 
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:3001");
 socket.emit("register", "admin", "Administrator");
 
 const messages = document.getElementById("messages");
 const form = document.getElementById("chatForm");
 const input = document.getElementById("msgInput");
 
-socket.on("chat_message", msg => addMessage(msg));
+// === Показываем только входящие от клиентов ===
+socket.on("chat_message", msg => {
+  // Не показываем повторно свои же отправленные сообщения
+  if (msg.user !== "Administrator") addMessage(msg);
+});
 
 form.addEventListener("submit", e => {
   e.preventDefault();
@@ -102,7 +106,7 @@ form.addEventListener("submit", e => {
   if (!text) return;
   const msg = { user: "Administrator", text };
   socket.emit("chat_message", msg);
-  addMessage(msg);
+  addMessage(msg); // только локально добавляем
   input.value = "";
 });
 

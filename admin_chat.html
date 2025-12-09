@@ -94,9 +94,9 @@ const messages = document.getElementById("messages");
 const form = document.getElementById("chatForm");
 const input = document.getElementById("msgInput");
 
-// === Показываем только входящие от клиентов ===
+
 socket.on("chat_message", msg => {
-  // Не показываем повторно свои же отправленные сообщения
+
   if (msg.user !== "Administrator") addMessage(msg);
 });
 
@@ -106,7 +106,7 @@ form.addEventListener("submit", e => {
   if (!text) return;
   const msg = { user: "Administrator", text };
   socket.emit("chat_message", msg);
-  addMessage(msg); // только локально добавляем
+  addMessage(msg);
   input.value = "";
 });
 

@@ -4,12 +4,12 @@ require_once __DIR__ . '/db.php';
 
 $usersFile = __DIR__ . '/users.json';
 
-// === создаём JSON, если нет ===
+
 if (!file_exists($usersFile)) {
     file_put_contents($usersFile, json_encode(new stdClass(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 
-// === загружаем пользователей из JSON ===
+
 $usersRaw = json_decode(file_get_contents($usersFile), true) ?? [];
 $users = [];
 if (is_array($usersRaw)) {
@@ -42,11 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // === Добавляем в JSON ===
         $users[$email] = ['name' => $name, 'email' => $email, 'password' => $hash];
         file_put_contents($usersFile, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-        // === Добавляем в PostgreSQL (если доступен) ===
         if ($conn) {
             @pg_query_params($conn,
                 "INSERT INTO users (username, email, password, role) VALUES ($1,$2,$3,'user')",
@@ -54,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
-        // 🔄 Синхронизируем JSON ↔ SQL
+       
         if ($conn) {
     $insert_result = @pg_query_params(
         $conn,

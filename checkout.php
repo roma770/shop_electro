@@ -13,7 +13,7 @@ function cart_total($products) {
 
 $order_placed = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['address'])) {
-    // В реальном сайте тут могла бы быть запись в БД и отправка email
+   
     $order_placed = true;
     $_SESSION['cart'] = [];
 }

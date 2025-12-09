@@ -1,21 +1,22 @@
 <?php
 session_start();
+
+
 $user_name = $_SESSION['user']['name'] ?? null;
 $admin_email = 'admin@electroshop.pl';
+
 
 if (!empty($_SESSION['success_message'])) {
     echo "<div class='alert-success'>" . htmlspecialchars($_SESSION['success_message']) . "</div>";
     unset($_SESSION['success_message']);
 }
-
-// === Показываем сообщение о регистрации ===
-$success_message = $_SESSION['success_message'] ?? '';
+$success_message = $_SESSION['success_message'] ?? '';  
 if ($success_message) {
     echo "<div class='alert-success'>$success_message</div>";
     unset($_SESSION['success_message']);
 }
 
-// === Загружаем товары ===
+
 $products_full = json_decode(file_get_contents(__DIR__ . '/products.json'), true);
 $products = $products_full;
 $all_categories = [];
@@ -24,7 +25,7 @@ if (is_array($products_full)) {
     sort($all_categories);
 }
 
-// === Фильтрация по категории ===
+
 $category_query = trim($_GET['category'] ?? '');
 $page_title = 'Wszystkie produkty:';
 if ($category_query !== '') {
@@ -32,7 +33,7 @@ if ($category_query !== '') {
     $page_title = 'Kategoria: ' . ucfirst($category_query);
 }
 
-// === Поиск ===
+
 $search_query = trim($_GET['q'] ?? '');
 if ($search_query !== '') {
     $products = array_filter($products, function($p) use ($search_query) {
@@ -41,7 +42,7 @@ if ($search_query !== '') {
     $page_title = 'Wyniki wyszukiwania dla: "' . htmlspecialchars($search_query) . '"';
 }
 
-// === Корзина ===
+
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     $id = $_POST['product_id'];
@@ -51,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     header('Location: index.php');
     exit;
 }
+
+
 ?>
 <!doctype html>
 <html lang="pl">
@@ -60,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
 <title>Electro Shop — Sklep z technologią</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* === ДОПОЛНИТЕЛЬНО ДЛЯ МОДАЛКИ === */
+
 .product { cursor: pointer; transition: transform 0.2s ease; }
 .product:hover { transform: translateY(-3px); }
 
@@ -204,7 +207,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     </nav>
 </aside>
 
-<!-- Полупрозрачный фон -->
 <div class="overlay" id="overlay"></div>
 
 <main>
@@ -230,7 +232,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     <p>© 2025 Electro Shop — Sklep z technologią</p>
 </footer>
 
-<!-- Модальное окно -->
 <div class="product-modal" id="productModal">
     <div class="modal-header">
         <h3 id="modalTitle"></h3>
@@ -264,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('productModal');
     const modalClose = document.getElementById('modalClose');
 
-    // === Открытие / закрытие бокового меню ===
+  
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('open');
         overlay.classList.toggle('open');
@@ -278,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalClose.addEventListener('click', () => modal.classList.remove('open'));
 
-    // === Модалка для товара ===
+
     const products = <?= json_encode($products_full, JSON_UNESCAPED_UNICODE) ?>;
     document.querySelectorAll('.product').forEach(card => {
         card.addEventListener('click', (e) => {
@@ -302,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // === Добавление в корзину ===
+    
     document.querySelectorAll('.add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -316,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
-<!-- === MINI CHAT WIDGET === -->
+
 <div id="chatWidget" style="
   position: fixed;
   bottom: 20px;
@@ -343,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </form>
 </div>
 
-<!-- === КНОПКА ОТКРЫТИЯ ЧАТА === -->
 <button id="chatToggle" style="
   position:fixed;
   bottom:20px;
@@ -358,20 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
   box-shadow:0 6px 18px rgba(0,0,0,0.25);
   cursor:pointer;">💬</button>
 
-<!-- === Подключение Socket.io === -->
+
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
-/* === ПОДКЛЮЧЕНИЕ К SOCKET.IO-СЕРВЕРУ ===
-   ⚠️ Если сервер работает локально → http://localhost:3001
-   ⚙️ Если уже задеплоен на Render → вставь его URL, например:
-       const socket = io("https://shop-electro-h2yf.onrender.com");
-*/
 const socket = io("http://localhost:3001");
 
-// === РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЯ ===
+
 socket.emit("register", "user", "Użytkownik");
 
-// === DOM-элементы ===
+
 const chatWidget = document.getElementById("chatWidget");
 const chatToggle = document.getElementById("chatToggle");
 const chatClose = document.getElementById("chatClose");
@@ -379,7 +374,6 @@ const chatForm = document.getElementById("chatForm");
 const chatInput = document.getElementById("chatInput");
 const chatMessages = document.getElementById("chatMessages");
 
-// === ОТКРЫТИЕ / ЗАКРЫТИЕ ЧАТА ===
 chatToggle.addEventListener("click", () => {
   chatWidget.style.display = "flex";
   chatToggle.style.display = "none";
@@ -390,21 +384,18 @@ chatClose.addEventListener("click", () => {
   chatToggle.style.display = "block";
 });
 
-// === ОТПРАВКА СООБЩЕНИЙ ===
 chatForm.addEventListener("submit", e => {
   e.preventDefault();
   const text = chatInput.value.trim();
   if (!text) return;
 
   const msg = { user: "Użytkownik", text };
-  socket.emit("chat_message", msg); // отправляем на сервер
+  socket.emit("chat_message", msg);
   chatInput.value = "";
 });
 
-// === ПОЛУЧЕНИЕ СООБЩЕНИЙ ОТ СЕРВЕРА ===
 socket.on("chat_message", msg => addMessage(msg));
 
-// === ДОБАВЛЕНИЕ СООБЩЕНИЙ В ОКНО ===
 function addMessage(msg) {
   const div = document.createElement("div");
   div.style.margin = "4px 0";
@@ -413,7 +404,6 @@ function addMessage(msg) {
   div.style.maxWidth = "85%";
   div.style.wordWrap = "break-word";
 
-  // Разделяем визуально отправителя и получателя
   if (msg.user === "Użytkownik") {
     div.style.background = "#e8f5e9";
     div.style.alignSelf = "flex-end";

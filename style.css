@@ -1,6 +1,5 @@
-/* === ОБЩИЕ НАСТРОЙКИ === */
-* { box-sizing: border-box; }
 
+* { box-sizing: border-box; }
 html, body {
     margin: 0;
     padding: 0;
@@ -11,7 +10,6 @@ html, body {
     line-height: 1.6;
 }
 
-/* === ШАПКА === */
 header {
   display: flex;
   justify-content: space-between;
@@ -38,7 +36,7 @@ header h1 {
   flex: 1 1 auto;
   min-width: 250px;
 }
-/* Гамбургер */
+
 .category-toggle {
     font-size: 1.8em;
     background: none;
@@ -49,8 +47,6 @@ header h1 {
 }
 .category-toggle:hover { color: #1f5; }
 
-/* Поиск */
-/* === ВЫРАВНИВАНИЕ ПОИСКА === */
 .search-bar {
   display: flex;
   align-items: center;
@@ -72,6 +68,9 @@ header h1 {
   min-width: 140px;
 }
 
+
+
+
 .search-bar input::placeholder {
     color: #888;
 }
@@ -92,7 +91,7 @@ header h1 {
 }
 
 
-/* Навигация */
+
 nav { display: flex; gap: 15px; }
 nav a {
     text-decoration: none;
@@ -107,9 +106,8 @@ nav a:hover, nav a.active {
     color: #fff;
 }
 
-/* === ОСНОВНОЙ КОНТЕНТ === */
 main {
-  margin-top: 10px; /* вместо большого отступа */
+  margin-top: 10px; 
   padding-top: 0;
 }
 .page-title {
@@ -121,7 +119,7 @@ main {
   padding-left: 20px;
 }
 
-/* === КАРТОЧКИ ТОВАРОВ === */
+
 .products {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -172,7 +170,6 @@ button.add-to-cart:hover {
     background: #1f5;
 }
 
-/* === ГАМБУРГЕР / БОКОВОЕ МЕНЮ === */
 .category-sidebar {
     position: fixed;
     top: 0;
@@ -199,7 +196,7 @@ button.add-to-cart:hover {
     gap: 12px;
 }
 
-/* Заголовок меню */
+
 .category-nav h3 {
     font-size: 1.05em;
     color: #2a7;
@@ -210,7 +207,7 @@ button.add-to-cart:hover {
     padding-left: 10px;
 }
 
-/* Элементы категорий */
+
 .category-nav ul {
     list-style: none;
     padding: 0;
@@ -241,7 +238,7 @@ button.add-to-cart:hover {
     transform: translateX(4px);
 }
 
-/* Активная категория */
+
 .category-nav a.active {
     background-color: #2a7;
     color: #fff;
@@ -249,14 +246,13 @@ button.add-to-cart:hover {
     box-shadow: 0 2px 8px rgba(42,170,119,0.3);
 }
 
-/* Разделители */
+
 .menu-divider {
     border: none;
     border-top: 1px solid #e0e0e0;
     margin: 18px 0;
 }
 
-/* Подзаголовки типа “Menu sklepu” */
 .category-nav h4 {
     font-size: 1em;
     color: #2a7;
@@ -266,7 +262,7 @@ button.add-to-cart:hover {
     padding-bottom: 4px;
 }
 
-/* Анимация появления */
+
 .category-sidebar.open {
     animation: slideIn 0.3s ease forwards;
 }
@@ -275,14 +271,13 @@ button.add-to-cart:hover {
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* Тень у активного элемента */
 .category-nav a.active:hover {
     background-color: #1f5;
     color: #fff;
     transform: none;
 }
 
-/* === FOOTER === */
+
 footer {
     padding: 18px;
     background: #fff;
@@ -292,10 +287,10 @@ footer {
     border-top: 1px solid #eee;
 }
 
-/* === О НАС (about.php) === */
+
 .about {
     max-width: 900px;
-    margin: 0 auto 40px; /* без отступа сверху */
+    margin: 0 auto 40px;
     background: #fff;
     padding: 35px;
     border-radius: 12px;
@@ -325,7 +320,6 @@ footer {
     color: #777;
 }
 
-/* === КОРЗИНА (cart.php) === */
 .cart {
     width: 90%;
     max-width: 800px;
@@ -362,14 +356,13 @@ footer {
 }
 .actions button:hover { background: #1f5; }
 
-/* === АДАПТИВ === */
 @media (max-width: 700px) {
     header { flex-direction: column; align-items: flex-start; height: auto; padding: 10px 20px; }
     .search-bar input { width: 180px; }
     main { padding-top: 90px; }
     .cart { width: 95%; }
 }
-/* === ОВЕРЛЕЙ (ЗАКРЫТИЕ ГАМБУРГЕРА) === */
+
 .overlay {
     position: fixed;
     top: 0;
@@ -388,23 +381,23 @@ footer {
     opacity: 1;
     pointer-events: auto;
 }
-/* === КРАСИВАЯ ВЫРОВНЕННАЯ КОРЗИНА === */
+
 .cart-wrapper {
     width: 90%;
     max-width: 850px;
-    margin: 20px auto 50px; /* подняли корзину выше (было 40px auto 70px) */
+    margin: 20px auto 50px; 
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     padding: 25px 40px;
     transition: box-shadow 0.3s ease;
-    animation: fadeInUp 0.4s ease; /* плавное появление */
+    animation: fadeInUp 0.4s ease; 
 }
 .cart-wrapper:hover {
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
-/* === Таблица === */
+
 .cart {
     width: 100%;
     border-collapse: collapse;
@@ -442,14 +435,13 @@ footer {
     box-shadow: 0 0 0 3px rgba(42, 167, 100, 0.2);
 }
 
-/* === Блок итога === */
 .cart-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     border-top: 1px solid #e5e5e5;
-    padding-top: 15px; /* немного меньше отступ */
+    padding-top: 15px; 
     gap: 15px;
 }
 .cart-footer .total {
@@ -461,7 +453,7 @@ footer {
     color: #2a7;
 }
 
-/* === Кнопки === */
+
 .cart-footer .actions {
     display: flex;
     gap: 10px;
@@ -489,7 +481,7 @@ footer {
     box-shadow: 0 2px 6px rgba(42, 167, 100, 0.2);
 }
 
-/* === Анимация плавного появления === */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -501,7 +493,6 @@ footer {
     }
 }
 
-/* === Адаптив === */
 @media (max-width: 700px) {
     .cart-wrapper {
         padding: 20px;
@@ -519,14 +510,14 @@ footer {
         justify-content: flex-start;
     }
 }
-/* Поднимаем содержимое корзины выше внутри белого блока */
+
 .cart {
-    padding-top: 0 !important;      /* убираем лишний верхний отступ */
+    padding-top: 0 !important;      
     margin-top: 0 !important;
 }
 
 .cart table {
-    margin-top: 0 !important;       /* таблица ближе к верху */
+    margin-top: 0 !important;      
 }
 
 .cart th {
@@ -535,14 +526,14 @@ footer {
 }
 
 .total {
-    margin-top: 10px !important;    /* сумма чуть ближе к таблице */
+    margin-top: 10px !important;   
 }
 
 .actions {
-    margin-top: 8px !important;     /* кнопки ближе к сумме */
+    margin-top: 8px !important;    
 }
 
-/* Если корзина в отдельной секции (обертка) — убери там паддинги */
+
 main form {
     margin-top: 0 !important;
     padding-top: 0 !important;
@@ -559,14 +550,13 @@ main form {
 .cart td img:hover {
     transform: scale(1.05);
 }
-/* === СТИЛЬ КОРЗИНЫ (фото, расстояния, выравнивание) === */
 
-/* Поднимаем блок корзины выше */
+
+
 .cart-wrapper {
-    margin-top: 40px; /* было много пустоты — теперь аккуратно */
+    margin-top: 40px;
 }
 
-/* Таблица корзины */
 .cart {
     width: 90%;
     max-width: 900px;
@@ -579,7 +569,6 @@ main form {
     border-spacing: 0 10px;
 }
 
-/* Ячейки */
 .cart th {
     background: #f4faf6;
     color: #2a7;
@@ -595,7 +584,6 @@ main form {
     vertical-align: middle;
 }
 
-/* Фото и текст товара */
 .product-cell {
     display: flex;
     align-items: center;
@@ -633,7 +621,6 @@ main form {
     color: #222;
 }
 
-/* Цена и кнопки */
 .total {
     font-size: 1.1em;
     color: #111;
@@ -662,7 +649,6 @@ main form {
     background: #249961;
     transform: translateY(-2px);
 }
-/* === СТИЛЬ ПУСТОЙ КОРЗИНЫ === */
 .empty-cart {
     text-align: center;
     margin-top: 60px;
@@ -711,13 +697,11 @@ main form {
     transform: translateY(-3px);
 }
 
-/* Анимация появления */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Анимация для иконки */
 @keyframes cartBounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
@@ -758,7 +742,6 @@ main form {
     0%, 85% { opacity: 1; }
     100% { opacity: 0; transform: translateY(-10px); }
 }
-/* === Приветствие пользователя === */
 .user-greeting {
   display: inline-flex;
   align-items: center;
@@ -779,7 +762,6 @@ main form {
   color: #333;
 }
 
-/* === Кнопка администратора === */
 .admin-btn {
   background: #1976d2;
   color: #fff !important;
@@ -797,7 +779,6 @@ main form {
   box-shadow: 0 3px 10px rgba(13, 71, 161, 0.35);
 }
 
-/* === Кнопка выхода === */
 .logout-btn {
   background: #e53935;
   color: #fff !important;
@@ -814,7 +795,6 @@ main form {
 }
 
 
-/* === Блок пользователя === */
 .user-panel {
   display: flex;
   align-items: center;
@@ -831,9 +811,8 @@ main form {
   30% { transform: rotate(15deg); }
 }
 
-/* === КНОПКИ === */
 .nav-btn {
-  white-space: nowrap; /* кнопки не ломаются */
+  white-space: nowrap; 
   padding: 8px 14px;
   border-radius: 8px;
   text-decoration: none;
@@ -845,7 +824,7 @@ main form {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Цвета */
+
 .nav-btn.green {
   background: #2a7;
   color: #fff;
@@ -887,13 +866,13 @@ main form {
   background: #0d47a1;
 }
 
-/* Отдельные группы */
+
 .nav-links {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
-/* === Приветствие пользователя (аккуратный стиль) === */
+
 .user-greeting {
   display: inline-flex;
   align-items: center;
@@ -906,7 +885,7 @@ main form {
   font-weight: 500;
 }
 
-/* === Кнопка администратора (в том же стиле, только синим цветом) === */
+
 .admin-btn {
   background: #1e88e5;
   color: #fff !important;
@@ -924,7 +903,7 @@ main form {
   transform: translateY(-2px);
 }
 
-/* === Кнопка выхода (в прежнем стиле) === */
+
 .logout-btn {
   background: #e53935;
   color: #fff !important;
@@ -940,11 +919,11 @@ main form {
   background: #c62828;
   transform: translateY(-2px);
 }
-/* === УЛУЧШЕННАЯ ВЕРХНЯЯ ПАНЕЛЬ === */
+
 .top-nav {
   display: flex;
   align-items: center;
-  flex-wrap: wrap; /* ✅ разрешаем перенос */
+  flex-wrap: wrap; 
   justify-content: flex-end;
   gap: 10px;
   flex: 1 1 auto;
@@ -960,7 +939,6 @@ main form {
   30% { transform: rotate(15deg); }
 }
 
-/* Цветовые варианты */
 .nav-btn.green {
   background: #2a7;
   color: #fff;
@@ -1002,7 +980,7 @@ main form {
   background: #dfe2e5;
 }
 
-/* Адаптив */
+
 @media (max-width: 900px) {
   .top-nav {
     justify-content: center;
@@ -1022,7 +1000,7 @@ main form {
   0%, 60%, 100% { transform: rotate(0deg); }
   30% { transform: rotate(15deg); }
 }
-/* Цветовые стили */
+
 .nav-btn.green {
   background: #2a7;
   color: #fff;
@@ -1079,13 +1057,13 @@ main form {
   transform: translateY(-2px);
 }
 
-/* Эффект при клике */
+
 .nav-btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* Адаптив */
+
 @media (max-width: 950px) {
   .top-nav {
     justify-content: center;

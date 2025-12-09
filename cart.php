@@ -5,7 +5,7 @@ $user_name = $_SESSION['user']['name'] ?? null;
 $products = json_decode(file_get_contents(__DIR__ . '/products.json'), true);
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
-// === Обновление / очистка / оформление ===
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update'])) {
         foreach ($_POST['qty'] as $id => $q) {
@@ -31,7 +31,6 @@ function cart_total($products) {
     return $sum;
 }
 
-// === Категории ===
 $all_categories = [];
 if (is_array($products)) {
     $all_categories = array_unique(array_column($products, 'category'));
@@ -52,7 +51,6 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* === ПУСТАЯ КОРЗИНА === */
 .empty-cart {
     text-align: center;
     background: #fff;
@@ -93,7 +91,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* === ТАБЛИЦА КОРЗИНЫ === */
+
 .cart-wrapper {
     max-width: 900px;
     margin: 50px auto;
@@ -189,7 +187,6 @@ body {
     </nav>
 </header>
 
-<!-- === Боковое меню === -->
 <aside class="category-sidebar" id="categorySidebar">
     <nav class="category-nav">
         <h3>Kategorie</h3>

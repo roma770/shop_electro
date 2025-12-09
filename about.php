@@ -3,7 +3,7 @@ session_start();
 $user_name = $_SESSION['user']['name'] ?? null;
 
 
-// === Загружаем товары (для бокового меню категорий и корзины) ===
+
 $products_full = json_decode(file_get_contents(__DIR__ . '/products.json'), true);
 $all_categories = [];
 
@@ -49,7 +49,7 @@ if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 </header>
 
 
-<!-- === ГАМБУРГЕР МЕНЮ === -->
+
 <aside class="category-sidebar" id="categorySidebar">
     <nav class="category-nav">
         <h3>Kategorie</h3>
@@ -74,7 +74,7 @@ if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
     </nav>
 </aside>
 
-<!-- === ЗАТЕМНЕНИЕ === -->
+
 <div class="overlay" id="overlay"></div>
 
 <main>
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('categoryToggleBtn');
     const overlay = document.getElementById('overlay');
 
-    // === ГАМБУРГЕР ===
+
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('open');
         overlay.classList.toggle('open');

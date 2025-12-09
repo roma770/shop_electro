@@ -5,7 +5,9 @@ $products_file = __DIR__ . '/products.json';
 $products = json_decode(file_get_contents($products_file), true);
 $admin_password = 'roman67733';
 
-// === Вход ===
+
+
+
 if (isset($_POST['password'])) {
     if ($_POST['password'] === $admin_password) {
         $_SESSION['is_admin'] = true;
@@ -14,14 +16,15 @@ if (isset($_POST['password'])) {
     }
 }
 
-// === Выход ===
+
+
 if (isset($_GET['logout'])) {
     unset($_SESSION['is_admin']);
     header("Location: admin.php");
     exit;
 }
 
-// === Удаление ===
+
 if (isset($_GET['delete']) && isset($_SESSION['is_admin'])) {
     unset($products[$_GET['delete']]);
     file_put_contents($products_file, json_encode($products, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -29,11 +32,10 @@ if (isset($_GET['delete']) && isset($_SESSION['is_admin'])) {
     exit;
 }
 
-// === Добавление / Редактирование ===
+
 if (isset($_POST['save']) && isset($_SESSION['is_admin'])) {
     $id = $_POST['id'];
     if ($id === '') {
-        // Новый товар
         $id = count($products) > 0 ? max(array_keys($products)) + 1 : 1;
     }
 
@@ -50,11 +52,12 @@ if (isset($_POST['save']) && isset($_SESSION['is_admin'])) {
     exit;
 }
 
-// === Получение товара для редактирования ===
 $edit_product = null;
 if (isset($_GET['edit']) && isset($products[$_GET['edit']])) {
     $edit_product = $products[$_GET['edit']];
 }
+
+
 ?>
 <!doctype html>
 <html lang="pl">

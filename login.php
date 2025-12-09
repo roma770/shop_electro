@@ -6,7 +6,6 @@ require_once __DIR__ . '/db.php';
 $usersFile = __DIR__ . '/users.json';
 $usersRaw = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
 
-// --- нормализуем структуру users
 $users = [];
 if (is_array($usersRaw)) {
     $is_list = array_keys($usersRaw) === range(0, count($usersRaw) - 1);
@@ -19,16 +18,18 @@ if (is_array($usersRaw)) {
     }
 }
 
-// === админ ===
+
 $admin_email = 'admin@electroshop.pl';
 $admin_password = 'admin1234';
 $error = '';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    // --- вход администратора
+
+
     if ($email === $admin_email && $password === $admin_password) {
         $_SESSION['user'] = ['name' => 'Administrator', 'email' => $admin_email];
         $_SESSION['success_message'] = "👑 Witaj ponownie, Administrator!";
@@ -36,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // --- вход через PostgreSQL
+    
+    
     if ($conn) {
         $res = @pg_query_params($conn, "SELECT * FROM users WHERE email=$1", [$email]);
         if ($res && pg_num_rows($res) > 0) {
@@ -53,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // --- вход через JSON
+ 
     if ($email && isset($users[$email]) && password_verify($password, $users[$email]['password'])) {
         $_SESSION['user'] = $users[$email];
         $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($users[$email]['name']) . "!";

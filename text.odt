@@ -1,6 +1,59 @@
-1) admin.php        ← страница администратора
+        Roman Chumak id:67733  -  SHOP_ELECTRO
+        technologie:
+        Backend: sesje PHP
+        Frontend: HTML, CSS, JavaScript, node js
+        Baza danych: PostgreSQL
+        Bezpieczne połączenie przez PDO
+        Komunikacja AJAX dla czatu
+        Hosting: Render.com
+      
+ struktura:
+ ├─ .idea/                  → pliki środowiska IDE (PhpStorm)
+ ├─ .vscode/                → ustawienia VS Code
+ ├─ css/                    → style CSS
+ ├─ images/                 → obrazy produktów i grafika
+ ├─ node_modules/           → pakiety Node.js (czat Socket.io)
+ ├─ about.php               → strona „O nas”
+ ├─ admin_chat.html         → wersja panelu czatu admina 
+ ├─ admin_chat.php          → panel czatu administratora (Socket.io)
+ ├─ admin.php               → panel administratora sklepu
+ ├─ cart.php                → koszyk klienta
+ ├─ chat.json               → lokalna historia czatu (tymczasowo)
+ ├─ checkout.php            → składanie zamówienia
+ ├─ db.php                  → połączenie z bazą PostgreSQL (lokalnie / Render)
+ ├─ Dockerfile              → konfiguracja aplikacji dla Render.com
+ ├─ index.php               → strona główna sklepu (produkty + czat)
+ ├─ login.php               → logowanie użytkownika / admina
+ ├─ logout.php              → wylogowanie użytkownika
+ ├─ package.json            → zależności serwera czatu Node.js
+ ├─ package-lock.json       → plik blokady npm
+ ├─ products.json           → baza produktów w formacie JSON
+ ├─ profile.php             → profil użytkownika
+ ├─ register.php            → rejestracja nowych użytkowników
+ ├─ server.js               → serwer czatu WebSocket (Socket.io)
+ ├─ style.css               → główny plik stylów
+ ├─ test_pgsql.php          → test połączenia PostgreSQL
+ └─ users.json              → lokalna baza użytkowników 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1) admin.php        ← strona admina 
 2) admin@electroshop.pl - admin1234
-         roman67733
-file:///C:/xampp/htdocs/shop_electro/admin_chat.html 
+        haslo 2: roman67733
 http://localhost/shop_electro/test_pgsql.php 
 3) sql- admin123
+4) http do strony: https://shop-electro-h2yf.onrender.com/index.php
+panel administratora : file:///C:/xampp/htdocs/shop_electro/admin_chat.html?

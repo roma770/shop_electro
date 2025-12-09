@@ -126,8 +126,8 @@ background: #fff;
 .admin-product img {
      width: 100%;
     height: 220px;
-    object-fit: contain; /* 🔥 чтобы фото не обрезались */
-    background: #fafafa; /* мягкий фон под фото */
+    object-fit: contain; 
+    background: #fafafa; 
     padding: 12px;
     border-bottom: 1px solid #eee;
     transition: transform 0.25s ease;

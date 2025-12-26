@@ -4,11 +4,9 @@ require_once __DIR__ . '/db.php';
 
 $usersFile = __DIR__ . '/users.json';
 
-
 if (!file_exists($usersFile)) {
     file_put_contents($usersFile, json_encode(new stdClass(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
-
 
 $usersRaw = json_decode(file_get_contents($usersFile), true) ?? [];
 $users = [];
@@ -38,40 +36,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($email === $admin_email) {
         $error = '⚠️ Ten adres e-mail jest zarezerwowany.';
     } elseif (isset($users[$email])) {
-        $error = '📧 Konto z tym adresem e-mail już istnieje.';
+        $error = '📧 Konto z tym adresem e-mail już istnieje в JSON.';
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $users[$email] = ['name' => $name, 'email' => $email, 'password' => $hash];
-        file_put_contents($usersFile, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        try {
+          
+            $sql = "INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, 'user')";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([
+                ':username' => $name,
+                ':email'    => $email,
+                ':password' => $hash
+            ]);
 
-        if ($conn) {
-            @pg_query_params($conn,
-                "INSERT INTO users (username, email, password, role) VALUES ($1,$2,$3,'user')",
-                [$name, $email, $hash]
-            );
+            $users[$email] = ['name' => $name, 'email' => $email, 'password' => $hash];
+            file_put_contents($usersFile, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+            $_SESSION['user'] = ['name' => $name, 'email' => $email];
+            $_SESSION['success_message'] = "✅ Konto zostało pomyślnie utworzone! Witaj, $name 👋";
+            header('Location: index.php');
+            exit;
+
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                $error = '❌ Ten e-mail jest już zajęty в базе данных.';
+            } else {
+                $error = '❌ Błąd bazy danych: ' . $e->getMessage();
+            }
         }
-
-       
-        if ($conn) {
-    $insert_result = @pg_query_params(
-        $conn,
-        "INSERT INTO users (username, email, password, role)
-         VALUES ($1, $2, $3, 'user')",
-        [$name, $email, $hash]
-    );
-
-    if ($insert_result) {
-        echo "<p style='color:green;'>✅ Użytkownik zapisany w PostgreSQL!</p>";
-    } else {
-        echo "<p style='color:red;'>❌ Błąd zapisu do PostgreSQL: " . pg_last_error($conn) . "</p>";
-    }
-}
-
-        $_SESSION['user'] = ['name' => $name, 'email' => $email];
-        $_SESSION['success_message'] = "✅ Konto zostało pomyślnie utworzone! Witaj, $name 👋";
-        header('Location: index.php');
-        exit;
     }
 }
 ?>

@@ -1,64 +1,92 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/db.php'; 
+
 
 $usersFile = __DIR__ . '/users.json';
-$usersRaw = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
+$usersRaw = file_exists($usersFile)
+    ? json_decode(file_get_contents($usersFile), true)
+    : [];
 
 $users = [];
 if (is_array($usersRaw)) {
     $is_list = array_keys($usersRaw) === range(0, count($usersRaw) - 1);
     if ($is_list) {
         foreach ($usersRaw as $u) {
-            if (!empty($u['email'])) $users[trim($u['email'])] = $u;
+            if (!empty($u['email'])) {
+                $users[trim($u['email'])] = $u;
+            }
         }
     } else {
         $users = $usersRaw;
     }
 }
 
-
 $admin_email = 'admin@electroshop.pl';
 $admin_password = 'admin1234';
+
 $error = '';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
+    if (!$email || !$password) {
+        $error = "❌ Wypełnij wszystkie pola.";
+    }
 
-
-    if ($email === $admin_email && $password === $admin_password) {
-        $_SESSION['user'] = ['name' => 'Administrator', 'email' => $admin_email];
+    if (!$error && $email === $admin_email && $password === $admin_password) {
+        $_SESSION['user'] = [
+            'name'  => 'Administrator',
+            'email' => $admin_email,
+            'role'  => 'admin'
+        ];
         $_SESSION['success_message'] = "👑 Witaj ponownie, Administrator!";
         header("Location: index.php");
         exit;
     }
 
-    
-    
-    if ($conn) {
-        $res = @pg_query_params($conn, "SELECT * FROM users WHERE email=$1", [$email]);
-        if ($res && pg_num_rows($res) > 0) {
-            $dbUser = pg_fetch_assoc($res);
-            if (password_verify($password, $dbUser['password'])) {
+   
+    if (!$error && $conn instanceof PDO) {
+        try {
+            $stmt = $conn->prepare(
+                "SELECT username, email, password, role 
+                 FROM users 
+                 WHERE email = :email 
+                 LIMIT 1"
+            );
+
+            $stmt->execute(['email' => $email]);
+            $dbUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($dbUser && password_verify($password, $dbUser['password'])) {
                 $_SESSION['user'] = [
-                    'name' => $dbUser['username'],
-                    'email' => $dbUser['email']
+                    'name'  => $dbUser['username'],
+                    'email' => $dbUser['email'],
+                    'role'  => $dbUser['role'] ?? 'user'
                 ];
-                $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($dbUser['username']) . "!";
+                $_SESSION['success_message'] =
+                    "👋 Witaj ponownie, " . htmlspecialchars($dbUser['username']) . "!";
                 header("Location: index.php");
                 exit;
             }
+        } catch (PDOException $e) {
+            error_log("❌ Błąd logowania (MySQL): " . $e->getMessage());
         }
     }
 
- 
-    if ($email && isset($users[$email]) && password_verify($password, $users[$email]['password'])) {
+    if (
+        !$error &&
+        $email &&
+        isset($users[$email]) &&
+        password_verify($password, $users[$email]['password'])
+    ) {
         $_SESSION['user'] = $users[$email];
-        $_SESSION['success_message'] = "👋 Witaj ponownie, " . htmlspecialchars($users[$email]['name']) . "!";
+        $_SESSION['success_message'] =
+            "👋 Witaj ponownie, " . htmlspecialchars($users[$email]['name']) . "!";
         header("Location: index.php");
         exit;
     }

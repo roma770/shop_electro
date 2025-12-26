@@ -57,3 +57,6 @@ http://localhost/shop_electro/test_pgsql.php
 3) sql- admin123
 4) http do strony: https://shop-electro-h2yf.onrender.com/index.php
 panel administratora : file:///C:/xampp/htdocs/shop_electro/admin_chat.html?
+
+
+node server.js

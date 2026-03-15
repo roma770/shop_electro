@@ -1086,3 +1086,125 @@ main form {
     flex: 1 1 100%;
   }
 }
+/* =========================================================
+   МОБИЛЬНАЯ ВЕРСИЯ (РАСШИРЕНИЕ ДЛЯ ТЕЛЕФОНОВ)
+   ========================================================= */
+
+@media (max-width: 768px) {
+    /* 1. Шапка сайта */
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px 10px;
+        gap: 15px;
+        height: auto;
+    }
+
+    .header-left {
+        justify-content: space-between;
+        width: 100%;
+        min-width: 100%;
+    }
+
+    /* 2. Поисковая строка на всю ширину */
+    .search-bar {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .search-bar input {
+        width: 100%;
+        min-width: 100px;
+    }
+
+    /* 3. Навигация и кнопки */
+    .top-nav, .nav-links {
+        justify-content: center;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .nav-btn {
+        flex: 1 1 calc(50% - 10px); /* Кнопки по 2 в ряд для экономии места */
+        text-align: center;
+        font-size: 0.9em;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* 4. Сетка товаров (2 товара в ряд на планшетах/больших телефонах) */
+    .products {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+        padding: 15px 10px 30px;
+    }
+
+    .product {
+        padding: 12px;
+    }
+
+    .product img {
+        height: 120px; /* Уменьшаем картинки для компактности */
+    }
+
+    .product h2 {
+        font-size: 0.95em;
+    }
+
+    /* 5. Боковое меню (категории) */
+    .category-sidebar {
+        width: 85%; /* На телефоне меню должно занимать почти весь экран */
+        max-width: 320px;
+    }
+
+    /* 6. Адаптация корзины */
+    .cart-wrapper {
+        width: 95%;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .cart th, .cart td {
+        font-size: 0.85em;
+        padding: 8px 5px;
+    }
+
+    .product-thumb {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .products {
+        grid-template-columns: 1fr; 
+    }
+    
+    .nav-btn {
+        flex: 1 1 100%; 
+    }
+
+    .cart {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .cart-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .cart-footer .actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .cart-footer .actions button {
+        width: 100%;
+        margin: 0;
+    }
+}
